@@ -1,0 +1,25 @@
+.Main {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	right: 0px;
+	margin: 0 auto;
+	padding: 10px 10px 0px 10px;
+	background: #ededed;
+	overflow: auto;
+	height: 100%;
+}
+/*外框样式*/
+.Box {
+	background: #fff;
+	border: #d0d0d0 1px solid;
+	border-radius: 5px;
+	margin-bottom: 10px;
+	padding:20px;
+	
+}
+.Main p {
+	display: block;
+	height: 100%;
+	line-height: 26px;
+}
