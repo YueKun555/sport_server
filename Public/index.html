@@ -4,17 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>打工人</title>
+    <title>运动健康</title>
     <link rel="stylesheet" type="text/css" href="./assets/styles/reset.css"></link>
     <link rel="icon" type="image/png" href="favicon.png"/>
     <style>
-        
         .child {
-            padding: 40px 15px;
+            padding: 70px 15px;
             text-align: center;
             line-height: 40px;
             color: white;
-            background-color: rgb(140, 228, 17);
+            background-color: #6DD400;
             font-size: 16.0px;
             font-weight: bold;
         }
@@ -27,34 +26,31 @@
             position: relative; /*脱离文档流*/
             top: 50%; /*偏移*/
             transform: translateY(-50%);
-            background-color: green;
+            background-color: #6DD400;
             font-weight: bold;
             font-size: 16.0px;
             color: white;
-            padding: 15px 40px;
-            border-radius: 5px;
+            padding: 15px 80px;
+            border-radius: 30px;
+        }
+        .title {
+            width: 100%;
+            height: 100.0;
+            color: green;
+            text-align: center;
+            display: block;
         }
     </style>
 </head>
 <body>
-    <img src="./assets/images/top.jpg" width="100%" style="display: block;" >
-    <div class="child" style="background-color: tomato;">
-        <p>“没有困难的工作，只有勇敢的打工人！”</p>
-        <p>“你好，打工人！”</p>
-        <p>“打工人，打工魂，打工人都是人上人！”</p>
+   
+    <img src="./assets/images/1.webp" width="100%" style="display: block;" >
+    <div class="child">
+        <p>越运动，越健康，越快乐！</p>
     </div>
-    <div class="child" style="background-color: rgb(143, 27, 6);">
-        <p>“打工人”不怕“干得多”，快乐来自为民服务！</p>
-        <p>“打工人”不怕“睡得晚”，快乐来自努力工作！</p>
-        <p>“打工人”不怕“走得远”，快乐来自群众认可！</p>
-    </div>
-    <div class="child" style="background-color: tomato;">
-        <p>“创建虚拟打工人！”</p>
-        <p>“赚钱金币！”</p>
-        <p>“快来一起打工赚钱吧！！！”</p>
-    </div>
+    <img src="./assets/images/2.jpeg" width="100%" style="display: block;" >
     <div id="download">
-        <button onclick="download()">下载app</button>
+        <button onclick="download()">开始运动</button>
     </div>
 </body>
 <script>
@@ -63,9 +59,8 @@
         var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
         if (isIOS) {
         　　//这个是ios操作系统
-            window.open('https://apps.apple.com/us/app/%E6%89%93%E5%B7%A5%E4%BA%BA-%E9%97%B2%E6%97%B6%E8%B5%9A%E9%92%B1/id1563874897');
+            window.open('https://apps.apple.com/us/app/%E8%BF%90%E5%8A%A8-%E5%81%A5%E5%BA%B7/id1565538193');
         } else {
-            window.open('./assets/images/top.jpg');
         }
     }
 </script>
