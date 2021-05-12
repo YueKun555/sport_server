@@ -35,17 +35,21 @@ final class UserModel: Model, Content {
     @Timestamp(key: "deleted_at", on: .delete)
     var deletedAt: Date?
     
+    var isShowAd: Bool?
+    
     init() { }
 
     init(
         id: UUID? = nil,
         uuid: UUID,
         energy: Int = 0,
-        money: Int = 0
+        money: Int = 0,
+        isShowAd: Bool = false
     ) {
         self.id = id
         self.uuid = uuid
         self.energy = energy
         self.money = money
+        self.isShowAd = isShowAd
     }
 }
