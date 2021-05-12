@@ -23,11 +23,16 @@ struct EnergysResponse: Content {
     let message: String
 }
 
+struct MoneyTransformRequest: Content {
+    let money: Int
+}
+
 struct EnergyController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
         let todos = routes.grouped("energys")
         todos.get(use: index)
         todos.post(use: create)
+        todos.post("transform", use: transform)
     }
 
     func index(req: Request) throws -> EventLoopFuture<EnergysResponse> {
@@ -64,5 +69,33 @@ struct EnergyController: RouteCollection {
                 }
         }
     }
+    
+    func transform(req: Request) throws -> EventLoopFuture<HTTPStatus> {
+        let request = try req.content.decode(MoneyTransformRequest.self)
+        return req.db.transaction { (db) -> EventLoopFuture<HTTPStatus> in
+            UserModel.query(on: db)
+                .sum(\.$energy)
+                .map({ (total) -> (Int) in
+                    if let value = total {
+                        return request.money * 100 / value
+                    }
+                    return 0
+                })
+                .flatMap { (value) -> EventLoopFuture<HTTPStatus> in
+                    return UserModel.query(on: db)
+                        .all()
+                        .flatMapEach(on: req.eventLoop) { (model) -> EventLoopFuture<HTTPStatus> in
+                            if value > 0 {
+                                let energy = model.energy
+                                model.energy = 0
+                                model.money += energy * value / 100
+                            }
+                            return req.eventLoop.makeSucceededFuture(HTTPStatus.ok)
+                        }
+                        .transform(to: HTTPStatus.ok)
+                }
+        }
+    }
+    
 }
 

@@ -22,12 +22,18 @@ struct MoneyExtractRequest: Content {
     let cardNumber: String
 }
 
+struct MoneyExtractStatusRequest: Content {
+    let uuid: UUID
+}
 
 struct MoneyExtractController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
         let todos = routes.grouped("moneys")
         todos.post("extract", use: create)
         todos.get("extract", use: index)
+        todos.get("extractIng", use: index)
+        todos.get("extractSuccess", use: success)
+        todos.get("extractFailure", use: failure)
     }
 
     func index(req: Request) throws -> EventLoopFuture<[MoneyExtractRecordModel]> {
@@ -71,11 +77,40 @@ struct MoneyExtractController: RouteCollection {
         }
     }
 
-    func delete(req: Request) throws -> EventLoopFuture<HTTPStatus> {
-        return Todo.find(req.parameters.get("todoID"), on: req.db)
-            .unwrap(or: Abort(.notFound))
-            .flatMap { $0.delete(on: req.db) }
-            .transform(to: .ok)
+    func ing(req: Request) throws -> EventLoopFuture<[MoneyExtractRecordModel]> {
+        return MoneyExtractRecordModel.query(on: req.db)
+            .filter(\.$status == Status.ing)
+            .all()
+    }
+    
+    func success(req: Request) throws -> EventLoopFuture<HTTPStatus> {
+        let request = try req.content.decode(MoneyExtractStatusRequest.self)
+        return MoneyExtractRecordModel.query(on: req.db)
+            .filter(\.$id == request.uuid)
+            .first()
+            .flatMap { (result) -> EventLoopFuture<HTTPStatus> in
+                if let model = result {
+                    model.status = .success
+                    return model.save(on: req.db)
+                        .transform(to: HTTPStatus.ok)
+                }
+                return req.eventLoop.makeFailedFuture(MoneyExtractError())
+            }
+    }
+    
+    func failure(req: Request) throws -> EventLoopFuture<HTTPStatus> {
+        let request = try req.content.decode(MoneyExtractStatusRequest.self)
+        return MoneyExtractRecordModel.query(on: req.db)
+            .filter(\.$id == request.uuid)
+            .first()
+            .flatMap { (result) -> EventLoopFuture<HTTPStatus> in
+                if let model = result {
+                    model.status = .failure
+                    return model.save(on: req.db)
+                        .transform(to: HTTPStatus.ok)
+                }
+                return req.eventLoop.makeFailedFuture(MoneyExtractError())
+            }
     }
 }
 
