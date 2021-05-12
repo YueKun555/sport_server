@@ -75,9 +75,9 @@ struct EnergyController: RouteCollection {
         return req.db.transaction { (db) -> EventLoopFuture<HTTPStatus> in
             UserModel.query(on: db)
                 .sum(\.$energy)
-                .map({ (total) -> (Int) in
+                .map({ (total) -> (Double) in
                     if let value = total {
-                        return request.money * 100 / value
+                        return Double(request.money) * 100.0 / Double(value)
                     }
                     return 0
                 })
@@ -87,10 +87,14 @@ struct EnergyController: RouteCollection {
                         .flatMapEach(on: req.eventLoop) { (model) -> EventLoopFuture<HTTPStatus> in
                             if value > 0 {
                                 let energy = model.energy
-                                model.energy = 0
-                                model.money += energy * value / 100
+                                let money = Int(Double(energy) * value / 100.0)
+                                if money > 0 {
+                                    model.energy = 0
+                                    model.money += money
+                                }
                             }
-                            return req.eventLoop.makeSucceededFuture(HTTPStatus.ok)
+                            return model.save(on: db)
+                                .transform(to: HTTPStatus.ok)
                         }
                         .transform(to: HTTPStatus.ok)
                 }

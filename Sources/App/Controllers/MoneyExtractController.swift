@@ -31,9 +31,9 @@ struct MoneyExtractController: RouteCollection {
         let todos = routes.grouped("moneys")
         todos.post("extract", use: create)
         todos.get("extract", use: index)
-        todos.get("extractIng", use: index)
-        todos.get("extractSuccess", use: success)
-        todos.get("extractFailure", use: failure)
+        todos.get("extractIng", use: ing)
+        todos.post("extractSuccess", use: success)
+        todos.post("extractFailure", use: failure)
     }
 
     func index(req: Request) throws -> EventLoopFuture<[MoneyExtractRecordModel]> {
@@ -107,7 +107,19 @@ struct MoneyExtractController: RouteCollection {
                 if let model = result {
                     model.status = .failure
                     return model.save(on: req.db)
-                        .transform(to: HTTPStatus.ok)
+                        .flatMap({ () -> EventLoopFuture<HTTPStatus> in
+                            return UserModel.query(on: req.db)
+                                .filter(\.$uuid == model.userUuid)
+                                .first()
+                                .flatMap { (result) -> EventLoopFuture<HTTPStatus> in
+                                    if let value = result {
+                                        value.money += model.number
+                                        return value.save(on: req.db)
+                                            .transform(to: HTTPStatus.ok)
+                                    }
+                                    return req.eventLoop.makeFailedFuture(MoneyExtractError())
+                                }
+                        })
                 }
                 return req.eventLoop.makeFailedFuture(MoneyExtractError())
             }
