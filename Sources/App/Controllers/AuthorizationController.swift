@@ -22,14 +22,22 @@ struct AuthorizationController: RouteCollection {
     
     func regiseter(req: Request) throws -> EventLoopFuture<HTTPStatus> {
         let authorization = try req.content.decode(AuthorizationModel.self)
-        return authorization.save(on: req.db)
-            .flatMap({ () -> EventLoopFuture<HTTPStatus> in
-                do {
-                    return try UserController().create(req: req, uuid: authorization.id!)
-                } catch {
-                    return req.eventLoop.makeFailedFuture(error)
+        return AuthorizationModel.query(on: req.db)
+            .filter(\.$phone == authorization.phone)
+            .first()
+            .flatMap { (result) -> EventLoopFuture<HTTPStatus> in
+                if let _ = result {
+                    return req.eventLoop.makeFailedFuture(AuthorizationError())
                 }
-            })
+                return authorization.save(on: req.db)
+                    .flatMap({ () -> EventLoopFuture<HTTPStatus> in
+                        do {
+                            return try UserController().create(req: req, uuid: authorization.id!)
+                        } catch {
+                            return req.eventLoop.makeFailedFuture(error)
+                        }
+                    })
+            }
     }
     
     func login(req: Request) throws -> EventLoopFuture<UserModel> {
