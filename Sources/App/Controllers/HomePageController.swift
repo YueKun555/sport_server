@@ -42,7 +42,7 @@ struct HomePageController: RouteCollection {
                 return HomeResponse(
                     distance: distance,
                     kcal: kcal,
-                    isShowMoney: true
+                    isShowMoney: false
                 )
             })
     }
