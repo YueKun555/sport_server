@@ -42,7 +42,7 @@ struct EnergyController: RouteCollection {
                 return EnergysResponse(
                     energy: user.energy,
                     money: user.money,
-                    message: "观看创意广告可获取能量，每周日会把能量转换为现金。"
+                    message: "1.观看创意广告可获取能量，每月月底会根据广告收入把能量转换为现金。\n2.现金可以提现到绑定银行卡中。\n3.iOS14前往 设置>隐私>跟踪>打开允许App请求跟踪 可获得更高的收益。"
                 )
             }
     }
