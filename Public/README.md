@@ -4,9 +4,9 @@
 
 ## 安装App
 
-### 1. __下载快乐运动[点击打开链接，点击开始运动下载](https://sport.yuekun.net)，注册并登录。__
+### 1. __下载 快乐运动 [点击打开链接，点击开始运动下载](https://sport.yuekun.net)，注册并登录。__
 
-### 2. __下载积木编程[点击打开链接，点击下载客户端下载](https://www.touchsprite.com/luabox)，注册并登录。__
+### 2. __下载 积木编程 [点击打开链接，点击下载客户端下载](https://www.touchsprite.com/luabox)，注册并登录。__
 
 ## 自动脚本使用
 
@@ -26,5 +26,6 @@
 
 ![](./assets/images/4.jpg)
 
-### 5. 打开脚本
+### 5. 返回 积木编程App 打开脚本
 ![](./assets/images/5.jpg)
+
