@@ -50,8 +50,6 @@ function findOpenButtonAndClick()
                 event.tap((x2 + x1) / 2.0, (y2 + y1) / 2.0);
                 mSleep(200)
                 event.tap((x2 + x1) / 2.0, (y2 + y1) / 2.0);
-                mSleep(200)
-                event.tap((x2 + x1) / 2.0, (y2 + y1) / 2.0);
                 -- 返回
                 backApp();
                 result = true;
@@ -74,10 +72,10 @@ function backApp()
     mSleep(getRndNum(3000,5000));
     local flag = app.runApp("com.yk.sports");
     if  flag == true then
-        mSleep(2000);
+        mSleep(5000);
         -- 查找关闭按钮并点击
         findCloseButtonAndClick();
-    end    
+    end
 end
 
 -- 查找关闭按钮并点击
@@ -191,7 +189,7 @@ for i=1,99999999 do
     packageName = app.frontPackageName();
     if packageName ~= "com.yk.sports" then
         app.runApp("com.yk.sports");
-        mSleep(2000);
+        mSleep(5000);
     end
 
     page = getCurrentPage();
