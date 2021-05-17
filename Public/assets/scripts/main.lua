@@ -32,7 +32,7 @@ end
 
 -- 查找打开按钮并点击
 function findOpenButtonAndClick()
-    local num = getRndNum(0, 2);
+    local num = getRndNum(0, 4);
     if num == 2 then
         toast("查找打开按钮")
         local result = false;
@@ -206,7 +206,8 @@ for i=1,99999999 do
         mSleep(getRndNum(5000,1000));
         findOpenButtonAndClick();
         else
-            if count >= 20 then
+            mSleep(3000);
+            if count >= 10 then
                 sleep();
             end
         end

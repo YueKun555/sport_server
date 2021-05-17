@@ -29,3 +29,5 @@
 ### 5. 返回 积木编程App 打开脚本
 ![](./assets/images/5.jpg)
 
+### 6. 关闭脚本
+![](./assets/images/6.jpg)
