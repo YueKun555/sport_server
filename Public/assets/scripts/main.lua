@@ -206,7 +206,7 @@ for i=1,99999999 do
         mSleep(getRndNum(5000,1000));
         findOpenButtonAndClick();
         else
-            if count >= 50 then
+            if count >= 20 then
                 sleep();
             end
         end
