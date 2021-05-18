@@ -32,7 +32,7 @@ end
 
 -- 查找打开按钮并点击
 function findOpenButtonAndClick()
-    local num = getRndNum(0, 4);
+    local num = getRndNum(0, 10);
     if num == 2 then
         toast("查找打开按钮")
         local result = false;
@@ -83,7 +83,7 @@ function findCloseButtonAndClick()
     toast("查找关闭按钮")
 
     local result = false;
-    local titles = {"关闭", "關閉", "Close"};
+    local titles = {"关闭", "關閉", "Close", "返回", "back"};
     for i = 1, #titles do
         local title = titles[i];
         local wid= widget.text(title);
@@ -203,7 +203,7 @@ for i=1,99999999 do
         if result == true then
         count = count + 1;
         toast("第"..tostring(count).."次"); 
-        mSleep(getRndNum(5000,1000));
+        mSleep(getRndNum(10000,20000));
         findOpenButtonAndClick();
         else
             mSleep(3000);
