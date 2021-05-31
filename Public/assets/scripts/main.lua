@@ -1,17 +1,7 @@
 require("BoxLib");
-
-exit = 0;
-count = 0;
-
-function luanch()
-    local flag = app.runApp("com.yk.sports")
-    if  flag == true then
-        toast("启动成功");
-        mSleep(15000);
-    else
-        toast("启动失败");
-    end
-end
+-- 屏幕常量
+device.keepWake();
+currentIndex = 1;
 
 -- 查找广告按钮并点击
 function findAdButtonAndClick()
@@ -22,40 +12,15 @@ function findAdButtonAndClick()
         mSleep(1000)
         --点击控件
         widget.click(wid)
+        mSleep(1000)
+        --点击控件
+        widget.click(wid)
+        mSleep(3000)
         return true;
     else
         mSleep(1000)
         mSleep(1000)
         return false;
-    end
-end
-
--- 查找打开按钮并点击
-function findOpenButtonAndClick()
-    local num = getRndNum(0, 200);
-    if num == 2 then
-        toast("查找打开按钮")
-        local result = false;
-        local titles = {"打开", "Open", "開啟", "安装", "注册", "联系我们", "立即下载"};
-        for i = 1, #titles do
-            local title = titles[i];
-            local wid= widget.text(title);
-            if wid ~= nil then
-                mSleep(1000)
-                x1,y1,x2,y2 = widget.region(wid)
-                toast(title.."控件已找到"); 
-                mSleep(1000)
-                -- dialog(tostring(x1).."-"..tostring(x2).."-"..tostring(y1).."-"..tostring(y2), 2000); 
-                --点击控件
-                event.tap((x2 + x1) / 2.0, (y2 + y1) / 2.0);
-                mSleep(200)
-                event.tap((x2 + x1) / 2.0, (y2 + y1) / 2.0);
-                -- 返回
-                backApp();
-                result = true;
-                break;
-            end
-        end
     end
 end
 
@@ -70,10 +35,35 @@ function backApp()
     end
 end
 
+-- 点击
+function tapAction()
+    local num = getRndNum(1,5);
+    if num == 3 then
+        findOpenButtonAndClick()
+    else 
+        findCloseButtonAndClick()
+    end
+end
+
+-- 查找打开按钮并点击
+function findOpenButtonAndClick()
+    toast("点击广告")
+    local w,h = getScreenSize();
+    event.tap(w / 2, h / 2);
+    mSleep(3000);
+    -- 检测应用是否打开
+    local packageName = app.frontPackageName();
+    local currentPackageName = currentPackage()
+    if packageName ~= currentPackageName then
+        app.runApp(currentPackageName);
+        mSleep(3000);
+    end
+    findCloseButtonAndClick()
+end
+
 -- 查找关闭按钮并点击
 function findCloseButtonAndClick()
     toast("查找关闭按钮")
-
     local result = false;
     local titles = {"关闭", "關閉", "Close", "返回", "back"};
     for i = 1, #titles do
@@ -85,10 +75,9 @@ function findCloseButtonAndClick()
             mSleep(1000)
             --点击控件
             widget.click(wid)
-            mSleep(500);
+            mSleep(1000);
             widget.click(wid)
-            -- 返回
-            backApp();
+            mSleep(1000);
             result = true;
             break;
         end
@@ -101,33 +90,17 @@ function findCloseButtonAndClick()
         mSleep(1000)
         --点击控件
         widget.click(wid)
-        -- 随机点击
-        rndClick();
+        mSleep(1000)
         result = true;
     end
 
     if result == false then
-        toast("没有找到关闭按钮，等待")
-        packageName = app.frontPackageName();
-        if packageName ~= "com.yk.sports" then
-            app.runApp("com.yk.sports");
-            mSleep(2000);
-            findCloseButtonAndClick();
-        else
-            local wid= widget.desc("广告赚钱");
-            if wid == nil then
-                exit = exit + 1;
-                if exit > 2 then
-                    exit = 0;
-                    toast("超时，返回"); 
-                    keycode.back();
-                    rndClick()
-                    mSleep(2000)
-                else
-                    mSleep(10000);
-                    findCloseButtonAndClick();
-                end
-            end
+        keycode.back();
+        mSleep(3000)
+        local page = getCurrentPage();
+        if page ~= "运动" then
+            local w,h = getScreenSize();
+            event.tap(w - 70, 160);
         end
     end
 end
@@ -140,55 +113,25 @@ function getCurrentPage()
     return nil;
 end
 
--- 随机点击
-function rndClick()
-    -- 检测应用是否打开
-    packageName = app.frontPackageName();
-    if packageName ~= "com.yk.sports" then
-        app.runApp("com.yk.sports");
-        mSleep(5000);
+function currentPackage()
+    local apps = {"com.yk.sports", "com.yk.health", "com.yk.sports.vungle"};
+    local name = apps[currentIndex];
+    if name == nil then
+        currentIndex = 1;
+        name = apps[currentIndex];
     end
-    for i=0, 30, 2 do
-        local page = getCurrentPage();
-        if page == "运动" then
-            local w,h = getScreenSize();
-            local x =  getRndNum(200, w-200);
-            local y =  getRndNum(400, h-200);
-            event.tap(x, y);
-            toast("随机点击"..tostring(x).."--"..tostring(y)); 
-            mSleep(2000);
-        else
-            toast("未知页面，返回"); 
-            keycode.back();
-            mSleep(2000)
-        end
-    end
+    return name;
 end
 
--- 休眠
-function sleep()
-    keycode.back();
-    mSleep(1000)
-    closeApp("com.apple.sports");
-    local duration = getRndNum(120,240);
-    for i=0,duration,2 do
-        toast("休息中，剩余"..tostring(duration-i)); 
-        mSleep(2000);
-    end
-    runtime.restart()
-end
 
--- 屏幕常量
-device.keepWake();
--- 启动App
-luanch();
--- 开始循环
+
 for i=1,9999 do
     -- 检测应用是否打开
     packageName = app.frontPackageName();
-    if packageName ~= "com.yk.sports" then
-        app.runApp("com.yk.sports");
-        mSleep(10000);
+    local currentPackageName = currentPackage()
+    if packageName ~= currentPackageName then
+        app.runApp(currentPackageName);
+        mSleep(3000);
     end
 
     page = getCurrentPage();
@@ -196,21 +139,15 @@ for i=1,9999 do
         -- 查找广告按钮并点击
         result = findAdButtonAndClick();
         if result == true then
-            count = count + 1;
-            toast("第"..tostring(count).."次"); 
-            mSleep(getRndNum(40000,50000));
-            findOpenButtonAndClick();
             page = getCurrentPage();
             if page ~= "运动" then
-                keycode.back();
+                mSleep(getRndNum(25000, 30000));
+                tapAction();
                 mSleep(3000);
             end
-            rndClick();
+            currentIndex = currentIndex + 1;
         else
-            mSleep(3000);
-            if count >= 10 then
-                sleep();
-            end
+            currentIndex = currentIndex + 1;
         end
     else
         toast("未知页面，返回"); 
