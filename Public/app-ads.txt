@@ -1,6 +1,8 @@
-google.com, pub-6676257071901474, DIRECT, f08c47fec0942fa0
-
-unity.com, 3289609, DIRECT, 96cabb5fbdde37a7
+unity.com, 3241983, DIRECT, 96cabb5fbdde37a7
+google.com, pub-8424945835316532, RESELLER
+telaria.com, rwd19-3241983, RESELLER, 1a4e959a1b50034a
+tremorhub.com, rwd19-3241983, RESELLER, 1a4e959a1b50034a
+unity.com, 3241983, DIRECT, 96cabb5fbdde37a7
 loopme.com, 9621, RESELLER, 6c8d5f95897a5a3b
 adcolony.com, 0a0f72cd66122f31, RESELLER, 1ad675c9de6b5176
 adcolony.com, 801e49d1be83b5f9, RESELLER, 1ad675c9de6b5176
@@ -35,5 +37,6 @@ indexexchange.com, 194080, RESELLER, 50b1c356f2c5c8fc
 bidmachine.io, 113, RESELLER
 rhythmone.com, 3630748062, RESELLER, a670c89d4a324e47
 video.unrulymedia.com, 3630748062, RESELLER, a670c89d4a324e47
-telaria.com, rwd19-3289609, RESELLER, 1a4e959a1b50034a
-tremorhub.com, rwd19-3289609, RESELLER, 1a4e959a1b50034a
+google.com, pub-8424945835316532, RESELLER
+telaria.com, rwd19-3241983, RESELLER, 1a4e959a1b50034a
+tremorhub.com, rwd19-3241983, RESELLER, 1a4e959a1b50034a
